@@ -2,7 +2,6 @@
     "name": "crazynds/crypto-cache",
     "description": "Package that encrypts all data used in the cache in such a way that a malicious user who has access to the cache system such as redis for example cannot extract the data directly.",
     "type": "library",
-    "version": "0.1",
     "require": {
         "php": ">=7.0",
         "illuminate/support": "^6.0 || ^7.0 || ^8.0 || ^9.0",
