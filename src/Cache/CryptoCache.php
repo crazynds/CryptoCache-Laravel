@@ -75,7 +75,7 @@ class CryptoCache implements Store{
         $data = $this->get($key);
         $time = Cache::store($this->cacheName)->get($key.'_time_');
         $data = ((int) $data) + $value;
-        $seconds = Carbon::now()->diffInSeconds(Carbon::parse($time));
+        $seconds = Carbon::now()->diffInSeconds(Carbon::parse((int)$time));
         $this->put($key,$data,$seconds);
     }
     public function decrement($key, $value = 1) {
