@@ -4,6 +4,8 @@ namespace Crazynds\CryptoCache\Cache;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Contracts\Cache\Store;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Contracts\Encryption\EncryptException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\InteractsWithTime;
@@ -20,25 +22,35 @@ class CryptoCache implements Store{
     }
 
     private function decrypt($data){
-        if(gettype($data)=='array'){
-            foreach($data as $key=>$val){
-                $data[$key] = Crypt::decryptString($val);
+        try{
+            if(gettype($data)=='array'){
+                foreach($data as $key=>$val){
+                    if(isset($val))
+                        $data[$key] = Crypt::decryptString($val);
+                }
+            }else{
+                if(isset($data))
+                    $data= Crypt::decryptString($data);
             }
-        }else{
-            return Crypt::decryptString($data);
+        }catch(DecryptException $e){
+            $data = null;
         }
+        return $data;
     }
 
     private function encrypt($data){
-        if(gettype($data)=='array'){
-            foreach($data as $key=>$val){
-                if(is_set($val))
-                    $data[$key] = Crypt::encryptString($val);
+        try{
+            if(gettype($data)=='array'){
+                foreach($data as $key=>$val){
+                    if(isset($val))
+                        $data[$key] = Crypt::encryptString($val);
+                }
+            }else{
+                if(isset($data))
+                    $data=Crypt::encryptString($data);
             }
-        }else{
-            if(is_set($data))
-                return Crypt::encryptString($data);
-        }
+        }catch(EncryptException $e){}
+        return $data;
     }
 
     public function get($key) {
@@ -50,12 +62,12 @@ class CryptoCache implements Store{
         return $this->decrypt($data);
     }
     public function put($key, $value, $seconds) {
-        Cache::store($this->cacheName)->put($key.'_time_',expiration($seconds));
+        Cache::store($this->cacheName)->put($key.'_time_',$this->expiration($seconds));
         return Cache::store($this->cacheName)->put($key,$this->encrypt($value), $seconds);
     }
     public function putMany(array $values, $seconds) {
         foreach($values as $key=>$val){
-            Cache::store($this->cacheName)->put($key.'_time_',expiration($seconds));
+            Cache::store($this->cacheName)->put($key.'_time_',$this->expiration($seconds));
         }
         return Cache::store($this->cacheName)->put($this->encrypt($values), $seconds);
     }
