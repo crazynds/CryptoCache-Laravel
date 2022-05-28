@@ -11,15 +11,15 @@
     "autoload": {
         "psr-4": {
             "Crazynds\\CryptoCache\\": "src/"
-        },
-        "extra": {
-            "laravel":{
-                "providers":[
-                    "\\Crazynds\\CryptoCache\\Provider\\CryptoCacheServiceProvider"
-                ],
-                "aliases":{
-                    "CryptoCache": "Crazynds\\CryptoCache\\Cache\\CryptoCache"
-                }
+        }
+    },
+    "extra": {
+        "laravel":{
+            "providers":[
+                "\\Crazynds\\CryptoCache\\Provider\\CryptoCacheServiceProvider"
+            ],
+            "aliases":{
+                "CryptoCache": "Crazynds\\CryptoCache\\Cache\\CryptoCache"
             }
         }
     },
