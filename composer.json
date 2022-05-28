@@ -1,0 +1,33 @@
+{
+    "name": "crazynds/crypto-cache",
+    "description": "Package that encrypts all data used in the cache in such a way that a malicious user who has access to the cache system such as redis for example cannot extract the data directly.",
+    "type": "library",
+    "require": {
+        "php": ">=7.0",
+        "illuminate/support": "^6.0 || ^7.0 || ^8.0 || ^9.0",
+        "illuminate/contracts": "^6.0 || ^7.0 || ^8.0 || ^9.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Crazynds\\CryptoCache\\": "src/"
+        },
+        "extra": {
+            "laravel":{
+                "providers":[
+                    "\\Crazynds\\CryptoCache\\Provider\\CryptoCacheServiceProvider"
+                ],
+                "aliases":{
+                    "CryptoCache": "Crazynds\\CryptoCache\\Cache\\CryptoCache"
+                }
+            }
+        }
+    },
+    "authors": [
+        {
+            "name": "crazynds",
+            "email": "luli.broch@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
