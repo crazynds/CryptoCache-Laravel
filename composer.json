@@ -16,7 +16,7 @@
     "extra": {
         "laravel":{
             "providers":[
-                "\\Crazynds\\CryptoCache\\Provider\\CryptoCacheServiceProvider"
+                "Crazynds\\CryptoCache\\CryptoCacheServiceProvider"
             ],
             "aliases":{
                 "CryptoCache": "Crazynds\\CryptoCache\\Cache\\CryptoCache"
@@ -29,5 +29,5 @@
             "email": "luli.broch@gmail.com"
         }
     ],
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }
