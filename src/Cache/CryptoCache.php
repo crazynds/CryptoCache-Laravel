@@ -20,7 +20,7 @@ class CryptoCache implements Store{
     }
 
     private function decrypt($data){
-        if(typeOf($data)=='array'){
+        if(gettype($data)=='array'){
             foreach($data as $key=>$val){
                 $data[$key] = Crypt::decryptString($val);
             }
@@ -30,7 +30,7 @@ class CryptoCache implements Store{
     }
 
     private function encrypt($data){
-        if(typeOf($data)=='array'){
+        if(gettype($data)=='array'){
             foreach($data as $key=>$val){
                 if(is_set($val))
                     $data[$key] = Crypt::encryptString($val);

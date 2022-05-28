@@ -2,7 +2,7 @@
 
 namespace Crazynds\CryptoCache;
 
-use CryptoCache\Cache\CryptoCache;
+use Crazynds\CryptoCache\Cache\CryptoCache;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 
@@ -15,16 +15,6 @@ class CryptoCacheServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->booting(function () {
-            Cache::extend('crypto-cache', function ($app) {
-                $value = config('cache.stores.crypto-cache');
-                if(isset($value) && isset($value['cache']))
-                    $cacheName = $value['cache'];
-                else
-                    $cacheName = 'file';
-                return Cache::repository(new CryptoCache($cacheName));
-            });
-         });
     }
 
     /**
@@ -34,6 +24,13 @@ class CryptoCacheServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Cache::extend('crypto-cache', function ($app) {
+            $value = config('cache.stores.crypto-cache');
+            if(isset($value) && isset($value['cache']))
+                $cacheName = $value['cache'];
+            else
+                $cacheName = 'file';
+            return Cache::repository(new CryptoCache($cacheName));
+        });
     }
 }
