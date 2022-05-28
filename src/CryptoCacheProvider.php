@@ -1,6 +1,6 @@
 <?php
 
-namespace Crazynds\CryptoCache\Provider;
+namespace Crazynds\CryptoCache;
 
 use CryptoCache\Cache\CryptoCache;
 use Illuminate\Support\Facades\Cache;
