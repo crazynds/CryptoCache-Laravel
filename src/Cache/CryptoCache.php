@@ -21,16 +21,16 @@ class CryptoCache implements Store{
         $this->cacheName = $cacheName;
     }
 
-    private function decrypt($data){
+    private function decrypt($data,$many){
         try{
-            if(gettype($data)=='array'){
+            if($many){
                 foreach($data as $key=>$val){
                     if(isset($val))
-                        $data[$key] = Crypt::decryptString($val);
+                        $data[$key] = unserialize(Crypt::decryptString($val));
                 }
             }else{
                 if(isset($data))
-                    $data= Crypt::decryptString($data);
+                    $data= unserialize(Crypt::decryptString($data));
             }
         }catch(DecryptException $e){
             $data = null;
@@ -38,16 +38,16 @@ class CryptoCache implements Store{
         return $data;
     }
 
-    private function encrypt($data){
+    private function encrypt($data,$many){
         try{
-            if(gettype($data)=='array'){
+            if($many){
                 foreach($data as $key=>$val){
                     if(isset($val))
-                        $data[$key] = Crypt::encryptString($val);
+                        $data[$key] = Crypt::encryptString(serialize($val));
                 }
             }else{
                 if(isset($data))
-                    $data=Crypt::encryptString($data);
+                    $data=Crypt::encryptString(serialize($data));
             }
         }catch(EncryptException $e){}
         return $data;
@@ -55,21 +55,21 @@ class CryptoCache implements Store{
 
     public function get($key) {
         $data = Cache::store($this->cacheName)->get($key);
-        return $this->decrypt($data);
+        return $this->decrypt($data,false);
     }
     public function many(array $keys) {
         $data = Cache::store($this->cacheName)->many($keys);
-        return $this->decrypt($data);
+        return $this->decrypt($data,true);
     }
     public function put($key, $value, $seconds) {
         Cache::store($this->cacheName)->put($key.'_time_',$this->expiration($seconds));
-        return Cache::store($this->cacheName)->put($key,$this->encrypt($value), $seconds);
+        return Cache::store($this->cacheName)->put($key,$this->encrypt($value,false), $seconds);
     }
     public function putMany(array $values, $seconds) {
         foreach($values as $key=>$val){
             Cache::store($this->cacheName)->put($key.'_time_',$this->expiration($seconds));
         }
-        return Cache::store($this->cacheName)->put($this->encrypt($values), $seconds);
+        return Cache::store($this->cacheName)->put($this->encrypt($values,true), $seconds);
     }
     public function increment($key, $value = 1) {
         $data = $this->get($key);
@@ -83,7 +83,7 @@ class CryptoCache implements Store{
     }
     public function forever($key, $value) {
         Cache::store($this->cacheName)->put($key.'_time_',-1);
-        return Cache::store($this->cacheName)->forever($key, $this->encrypt($value));
+        return Cache::store($this->cacheName)->forever($key, $this->encrypt($value,false));
     }
     public function forget($key) {
         return Cache::store($this->cacheName)->forget($key);
