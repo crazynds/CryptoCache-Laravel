@@ -4,9 +4,9 @@
 [![Total Downloads](http://poser.pugx.org/crazynds/crypto-cache/downloads)](https://packagist.org/packages/crazynds/crypto-cache)
 [![License](http://poser.pugx.org/crazynds/crypto-cache/license)](https://packagist.org/packages/crazynds/crypto-cache)
 
-This cache encrypts the data using the standard laravel library and saves it in another cache, allowing you to cache sensitive data, preventing any intrusion from leaking that data.
+This package encrypts the data stored in cache using the standard laravel library and saves it in another cache, allowing you to cache sensitive data, preventing any intrusion from leaking that data.
 
-## Instation
+## Installation
 
 1.  Install the package
 
